@@ -1,50 +1,50 @@
 <div class="widget-box" id="recent-box" ng-controller="tasksController">
-	<div class="widget-header header-color-blue">
-		<div class="row">
-			<div class="col-sm-6">
-				<h4 class="bigger lighter">
-					<i class="glyphicon glyphicon-align-justify"></i>&nbsp;
-					MY YEARLY GOALS
-				</h4>
-			</div>
-			<div class="col-sm-3">
-			</div>
-			<div class="col-sm-3">
-				<button ng-click="addNewClicked=!addNewClicked;" class="btn btn-sm btn-danger header-elements-margin"><i class="glyphicon  glyphicon-plus"></i>&nbsp;Add New Task</button>
-				<!--
-				<input type="text" ng-model="filterTask" class="form-control search header-elements-margin" placeholder="Filter Tasks">
-				-->
+    <div class="widget-header header-color-blue">
+        <div class="row">
+            <div class="col-sm-6">
+                <h4 class="bigger lighter">
+                    <i class="glyphicon glyphicon-align-justify"></i>&nbsp;
+                    MY YEARLY GOALS
+                </h4>
+            </div>
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-3">
+                <button ng-click="addNewClicked = !addNewClicked;" class="btn btn-sm btn-danger header-elements-margin"><i class="glyphicon  glyphicon-plus"></i>&nbsp;Add New Task</button>
+                <!--
+                <input type="text" ng-model="filterTask" class="form-control search header-elements-margin" placeholder="Filter Tasks">
+                -->
 
-			</div>
-		</div>
-	</div>
-	<div class="widget-body ">
-		<form ng-init="addNewClicked=false; " ng-if="addNewClicked" id="newTaskForm" class="add-task">
-			<div class="form-actions">
-				<div class="input-group">
-					<input type="text" class="form-control" name="comment" ng-model="taskInput" placeholder="Add New Task" ng-focus="addNewClicked">
-					<div class="input-group-btn">
-						<button class="btn btn-default" type="submit" ng-click="addTask(taskInput)"><i class="glyphicon glyphicon-plus"></i>&nbsp;Add New Task</button>
-					</div>
-				</div>
-			</div>
-		</form>
-		<div class="task">
-			<ul id="sortable">
-				<li class="checkbox" ng-repeat="task in tasks | filter : filterTask">
-				<input 
-				type="checkbox"
-				value="{{task.STATUS}}"
-				ng-checked="task.STATUS==2"
-				ng-click="toggleStatus(task.ID,task.STATUS, task.TASK)"/> 
-				<span ng-class="{strike:task.STATUS==2}">{{task.TASK}} [{{task.ID}}]</span>
-				<a ng-click="deleteTask(task.ID)" class="pull-right"><i class="glyphicon glyphicon-trash"></i></a>
-				</li>
-			</ul>
-		</div>		
-	</div>
-	
+            </div>
+        </div>
+    </div>
+    <div class="widget-body ">
+        <form ng-init="addNewClicked = false;" ng-if="addNewClicked" id="newTaskForm" class="add-task">
+            <div class="form-actions">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="comment" ng-model="newTask.task" placeholder="Add New Task" ng-focus="addNewClicked">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit" ng-click="addTask(newTask)"><i class="glyphicon glyphicon-plus"></i>&nbsp;Add New Task</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="task">
+            <ul ui-sortable="sortableOptions" ng-model="tasks">
+                <li class="checkbox" ng-repeat="(taskIndex, task) in tasks |orderBy:'previous_tasks_id'| filter : filterTask">
+                    <input 
+                        type="checkbox"
+                        ng-model="task.status"
+                        ng-true-value="'2'"
+                        ng-false-value="'0'"
+                        ng-change="toggleStatus(task)"
+                        /> 
+                    <span ng-class="{strike:task.status === '2'}">({{task.id}}){{task.task}} [{{task.previous_tasks_id}}]</span>
+                    <a ng-click="deleteTask(task, taskIndex)" class="pull-right"><i class="glyphicon glyphicon-trash"></i></a>
+                </li>
+            </ul>
+        </div>		
+    </div>
+
 
 </div>
-
-<script type="text/javascript" src="js/tasks.js"></script>
