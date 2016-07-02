@@ -7,6 +7,7 @@ app.controller('tasksController', function ($scope, $http, Loading, WS) {
     $scope.sortableOptions = {
         update: function (e, ui) {
             console.log(e, ui);
+            alert('How to know which task is before?');
         },
         axis: 'y'
     };
