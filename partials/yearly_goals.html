@@ -49,7 +49,7 @@
                         /> 
                     <span ng-class="{
                                 strike:task.status === '2'
-                            }">({{task.id}}){{task.task}} [{{task.position}}]</span>
+                            }">{{task.task}}({{task.id}})</span>
                     <a ng-click="deleteTask(task, taskIndex)" class="pull-right"><i class="glyphicon glyphicon-trash"></i></a>
                 </li>
             </ul>
