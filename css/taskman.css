@@ -22,6 +22,7 @@ div.task li.checkbox{
     position: relative;
     font-weight: normal;
     cursor: move;
+    transition: all 200ms linear;
 }
 .header-color-blue {
     background: #101010;
@@ -83,4 +84,16 @@ div.task li.checkbox{
 #overlayer-loading i{
     display: table-cell;
     vertical-align: middle;
+}
+
+div.task li.checkbox.over{
+    border-color: gray;
+    box-shadow: 0px 0px 10px black;
+    margin-left: 20px;
+}
+
+div.task li.checkbox.dragging{
+    box-shadow: 0px 0px 40px #269abc inset;
+    border-color: orange;
+    margin-left: 20px;
 }

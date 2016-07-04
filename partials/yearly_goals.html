@@ -31,7 +31,15 @@
         </form>
         <div class="task">
             <ul ui-sortable="sortableOptions" ng-model="tasks">
-                <li class="checkbox" ng-repeat="(taskIndex, task) in tasks |orderBy:'previous_tasks_id'| filter : filterTask">
+                <li class="checkbox" ng-repeat="(taskIndex, task) in tasks | orderBy:'position' | filter : filterTask"
+                    ng-dragstart="handleDragStart($event, task)"
+                    ng-dragend="handleDragEnd($event)"
+                    ng-dragenter="handleDragEnter($event)" 
+                    ng-dragleave="handleDragLeave($event)"
+                    ng-dragover="handleDragOver($event)"
+                    ng-drop="handleDrop($event, task)"
+                    draggable="true"
+                    >
                     <input 
                         type="checkbox"
                         ng-model="task.status"
@@ -39,7 +47,9 @@
                         ng-false-value="'0'"
                         ng-change="toggleStatus(task)"
                         /> 
-                    <span ng-class="{strike:task.status === '2'}">({{task.id}}){{task.task}} [{{task.previous_tasks_id}}]</span>
+                    <span ng-class="{
+                                strike:task.status === '2'
+                            }">({{task.id}}){{task.task}} [{{task.position}}]</span>
                     <a ng-click="deleteTask(task, taskIndex)" class="pull-right"><i class="glyphicon glyphicon-trash"></i></a>
                 </li>
             </ul>

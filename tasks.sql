@@ -21,16 +21,9 @@ CREATE TABLE IF NOT EXISTS `angularcode_task`.`tasks` (
   `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT '',
   `task` VARCHAR(200) NOT NULL COMMENT '',
   `status` INT(11) NOT NULL COMMENT '',
+  `position` INT(11) NOT NULL DEFAULT 0 COMMENT '',
   `created_at` INT(11) NOT NULL COMMENT '',
-  `previous_tasks_id` INT(11) NULL COMMENT '',
-  PRIMARY KEY (`id`)  COMMENT '',
-  INDEX `fk_tasks_tasks_idx` (`previous_tasks_id` ASC)  COMMENT '',
-  UNIQUE INDEX `previous_tasks_id_UNIQUE` (`previous_tasks_id` ASC)  COMMENT '',
-  CONSTRAINT `fk_tasks_tasks`
-    FOREIGN KEY (`previous_tasks_id`)
-    REFERENCES `angularcode_task`.`tasks` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  PRIMARY KEY (`id`)  COMMENT '')
 ENGINE = InnoDB
 AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = latin1;
@@ -45,10 +38,10 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `angularcode_task`;
-INSERT INTO `angularcode_task`.`tasks` (`id`, `task`, `status`, `created_at`, `previous_tasks_id`) VALUES (1, 'My first task', 0, 0, null);
-INSERT INTO `angularcode_task`.`tasks` (`id`, `task`, `status`, `created_at`, `previous_tasks_id`) VALUES (2, 'Perform unit testing', 2, 0, 1);
-INSERT INTO `angularcode_task`.`tasks` (`id`, `task`, `status`, `created_at`, `previous_tasks_id`) VALUES (3, 'Find bugs', 2, 0, 2);
-INSERT INTO `angularcode_task`.`tasks` (`id`, `task`, `status`, `created_at`, `previous_tasks_id`) VALUES (4, 'Test in small devices', 2, 0, 3);
+INSERT INTO `angularcode_task`.`tasks` (`id`, `task`, `status`, `position`, `created_at`) VALUES (1, 'My first task', 0, 1, 1390815970);
+INSERT INTO `angularcode_task`.`tasks` (`id`, `task`, `status`, `position`, `created_at`) VALUES (2, 'Perform unit testing', 2, 2, 1390815993);
+INSERT INTO `angularcode_task`.`tasks` (`id`, `task`, `status`, `position`, `created_at`) VALUES (3, 'Find bugs', 2, 3, 1390817659);
+INSERT INTO `angularcode_task`.`tasks` (`id`, `task`, `status`, `position`, `created_at`) VALUES (4, 'Test in small devices', 2, 4, 1390818389);
 
 COMMIT;
 
