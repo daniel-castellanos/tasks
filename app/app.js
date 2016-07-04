@@ -74,7 +74,10 @@ app.controller('tasksController', function ($scope, $http, Loading, WS) {
                 task.status = '0' === task.status ? '2' : '0';//revert
             }
 
-        }, WS.handleRequestError);
+        }, function (result) {
+            task.status = '0' === task.status ? '2' : '0';//revert
+            WS.handleRequestError(result);
+        });
 
     };
 
