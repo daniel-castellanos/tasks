@@ -9,10 +9,10 @@ class Task extends \Database {
         $status = 0;
 
         $query = "INSERT INTO tasks(task,status,created_at, position)  VALUES (:task, :status, :created_at,
-                (SELECT 1+t2.position position 
+                COALESCE((SELECT 1+t2.position as position 
                 FROM tasks t2
                 ORDER BY position DESC
-                LIMIT 1)
+                LIMIT 1),0)
                     )";
         $statementInsert = $this->prepare($query);
         $statementInsert->bindParam('task', $request->task, self::PARAM_STR);
@@ -67,7 +67,9 @@ class Task extends \Database {
         $response = new WsResponse();
         $status = $request['status']? : '%';
 
-        $statement = $this->prepare("select * from tasks where status like :status");
+        $statement = $this->prepare("SELECT * FROM tasks WHERE status LIKE :status
+            ORDER BY position, id ASC
+                ");
         $statement->bindParam('status', $status, self::PARAM_INT);
         $statementExecuted = $statement->execute();
         if (FALSE === $statementExecuted) {
@@ -128,6 +130,32 @@ class Task extends \Database {
 
 
 
+        return $response;
+    }
+
+    function updateOrder($request) {
+        $response = new WsResponse();
+        $response->debug = $request;
+        $this->beginTransaction();
+        $statementUpdate = $this->prepare("UPDATE tasks 
+            SET position=:position
+            WHERE id=:id");
+        foreach ($request->updates as $updateValues) {
+            $updated = $statementUpdate->execute(
+                    array(
+                        'position' => $updateValues->position
+                        , 'id' => $updateValues->id
+            ));
+            if (FALSE === $updated) {
+                $this->rollBack();
+                $response->value = FALSE;
+                $response->status = 1;
+                $response->message = 'Fail on query to reorder tasks';
+                $response->debug = $statementUpdate->errorInfo();
+                return $response;
+            }
+        }
+        $this->commit();
         return $response;
     }
 

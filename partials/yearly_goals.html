@@ -31,14 +31,15 @@
         </form>
         <div class="task">
             <ul ui-sortable="sortableOptions" ng-model="tasks">
-                <li class="checkbox" ng-repeat="(taskIndex, task) in tasks | orderBy:'position' | filter : filterTask"
-                    ng-dragstart="handleDragStart($event, task)"
+                <li class="checkbox" ng-repeat="(taskIndex, task) in tasks | orderBy:['position', 'id'] | filter : filterTask"
+                    ng-dragstart="handleDragStart($event, taskIndex)"
                     ng-dragend="handleDragEnd($event)"
-                    ng-dragenter="handleDragEnter($event)" 
+                    ng-dragenter="handleDragEnter($event, taskIndex)" 
                     ng-dragleave="handleDragLeave($event)"
                     ng-dragover="handleDragOver($event)"
-                    ng-drop="handleDrop($event, task)"
+                    ng-drop="handleDrop($event, taskIndex)"
                     draggable="true"
+                    ng-class="{'shift-up':task.initialPosition > task.position, 'shift-down':task.initialPosition < task.position}"
                     >
                     <input 
                         type="checkbox"
@@ -49,12 +50,25 @@
                         /> 
                     <span ng-class="{
                                 strike:task.status === '2'
-                            }">{{task.task}}({{task.id}})</span>
+                            }">{{taskIndex}}.-(#{{task.id}})  {{task.task}}</span>
                     <a ng-click="deleteTask(task, taskIndex)" class="pull-right"><i class="glyphicon glyphicon-trash"></i></a>
+                    <span class="position-changes" ng-if="task.initialPosition !== task.position">{{task.initialPosition}}->{{task.position}}</span> 
                 </li>
             </ul>
         </div>		
     </div>
+    <style>
+        .position-changes{
+            color: white;
+            float: right;
+            position: absolute;
+            right: 0px;
+            font-size: small;
+            background-color: black;
+            padding: 5px;
+            text-shadow: 0px 0px 2px red;
+        }
+    </style>
 
 
 </div>

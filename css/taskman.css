@@ -22,6 +22,7 @@ div.task li.checkbox{
     position: relative;
     font-weight: normal;
     cursor: move;
+    margin-left: 0px;
     transition: all 200ms linear;
 }
 .header-color-blue {
@@ -86,14 +87,32 @@ div.task li.checkbox{
     vertical-align: middle;
 }
 
-div.task li.checkbox.over{
+div.task li.checkbox.over:not(.dragging){
     border-color: gray;
     box-shadow: 0px 0px 10px black;
-    margin-left: 20px;
+    /*margin-left: 20px;*/
 }
 
 div.task li.checkbox.dragging{
     box-shadow: 0px 0px 40px #269abc inset;
     border-color: orange;
-    margin-left: 20px;
+    /*margin-left: 20px;*/
 }
+
+/*div.task li.checkbox.shift-up:not(.dragging){
+    animation-name: shif-up;
+    animation-duration: 200ms;
+}
+div.task li.checkbox.shif-down:not(.dragging){
+    animation-name: shif-down;
+    animation-duration: 200ms;
+}
+
+@keyframes shif-up {
+    from {margin-top:60px;}
+    to {margin-top:10px;}
+}
+@keyframes shif-down {
+    from {margin-top:-50px;}
+    to {margin-top:10px;}
+}*/
